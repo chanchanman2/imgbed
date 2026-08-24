@@ -20,18 +20,16 @@ jobs:
           set -euo pipefail
           curl -fL --retry 3 --retry-delay 2 -o /tmp/tripact_tcasi_overleaf_repo.7z 'https://release-assets.githubusercontent.com/github-production-release-asset/1309862671/1d820fe4-c33a-47fa-abd2-15630f40d370?sp=r&sv=2018-11-09&sr=b&spr=https&se=2026-08-24T04%3A54%3A05Z&rscd=attachment%3B+filename%3Dtripact_tcasi_overleaf_repo.7z&rsct=application%2Foctet-stream&skoid=96c2d410-5711-43a1-aedd-ab1947aa7ab0&sktid=398a6654-997b-47e9-b12b-9515b896b4de&skt=2026-08-24T03%3A53%3A31Z&ske=2026-08-24T04%3A54%3A05Z&sks=b&skv=2018-11-09&sig=nnuoX1DDg33rPyoECsyVPFbpGgw%2BPv1JuoKX4%2BNcstU%3D&jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmVsZWFzZS1hc3NldHMuZ2l0aHVidXNlcmNvbnRlbnQuY29tIiwia2V5Ijoia2V5MSIsImV4cCI6MTc4NzU0NDM3MywibmJmIjoxNzg3NTQ0MDczLCJwYXRoIjoicmVsZWFzZWFzc2V0cHJvZHVjdGlvbi5ibG9iLmNvcmUud2luZG93cy5uZXQifQ.5lTWwnlUKbZ9Pvo6ylW_cyl3ylNV9BY5a7iL3b52H70&response-content-disposition=attachment%3B%20filename%3Dtripact_tcasi_overleaf_repo.7z&response-content-type=application%2Foctet-stream'
           test -s /tmp/tripact_tcasi_overleaf_repo.7z
-          sha256sum /tmp/tripact_tcasi_overleaf_repo.7z
-      - name: Publish temporary public encrypted release
+      - name: Publish temporary latest encrypted release
         env:
           GH_TOKEN: ${{ github.token }}
         shell: bash
         run: |
           set -euo pipefail
-          TAG=temp-tripact-encrypted-20260824
+          TAG=temp-tripact-encrypted-latest
           gh release delete "$TAG" --yes --cleanup-tag 2>/dev/null || true
           gh release create "$TAG" /tmp/tripact_tcasi_overleaf_repo.7z \
             --repo "${{ github.repository }}" \
             --target main \
             --title "Temporary encrypted transfer" \
-            --notes "Encrypted short-lived transfer asset." \
-            --prerelease
+            --notes "Encrypted short-lived transfer asset."
